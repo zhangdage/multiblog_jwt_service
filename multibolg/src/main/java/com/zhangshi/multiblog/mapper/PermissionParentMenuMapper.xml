@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangshi.multiblog.mapper.PermissionParentMenuMapper">
+  <resultMap id="BaseResultMap" type="com.zhangshi.multiblog.entity.PermissionParentMenuKey">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <id column="parent_menu_id" jdbcType="INTEGER" property="parentMenuId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhangshi.multiblog.entity.PermissionParentMenuKey">
+    delete from permission_parent_menu
+    where id = #{id,jdbcType=INTEGER}
+      and permission_id = #{permissionId,jdbcType=INTEGER}
+      and parent_menu_id = #{parentMenuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhangshi.multiblog.entity.PermissionParentMenuKey">
+    insert into permission_parent_menu (id, permission_id, parent_menu_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}, #{parentMenuId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhangshi.multiblog.entity.PermissionParentMenuKey">
+    insert into permission_parent_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+      <if test="parentMenuId != null">
+        parent_menu_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="parentMenuId != null">
+        #{parentMenuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

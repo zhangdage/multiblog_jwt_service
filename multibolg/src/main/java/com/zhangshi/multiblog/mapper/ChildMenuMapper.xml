@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangshi.multiblog.mapper.ChildMenuMapper">
+  <resultMap id="BaseResultMap" type="com.zhangshi.multiblog.entity.ChildMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="parent_menu_id" jdbcType="INTEGER" property="parentMenuId" />
+    <result column="child_menu_name" jdbcType="VARCHAR" property="childMenuName" />
+    <result column="child_menu_no" jdbcType="VARCHAR" property="childMenuNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_menu_id, child_menu_name, child_menu_no
+  </sql>
+<!--通过parentMenuId获取子菜单-->
+  <select id="getChildMenuByParentMenuId" resultMap="BaseResultMap">
+    SELECT
+    id, parent_menu_id, child_menu_name, child_menu_no
+    FROM child_menu
+    WHERE parent_menu_id = #{0}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="com.zhangshi.multiblog.entity.ChildMenuKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from child_menu
+    where id = #{id,jdbcType=INTEGER}
+      and parent_menu_id = #{parentMenuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhangshi.multiblog.entity.ChildMenuKey">
+    delete from child_menu
+    where id = #{id,jdbcType=INTEGER}
+      and parent_menu_id = #{parentMenuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhangshi.multiblog.entity.ChildMenu">
+    insert into child_menu (id, parent_menu_id, child_menu_name, 
+      child_menu_no)
+    values (#{id,jdbcType=INTEGER}, #{parentMenuId,jdbcType=INTEGER}, #{childMenuName,jdbcType=VARCHAR}, 
+      #{childMenuNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhangshi.multiblog.entity.ChildMenu">
+    insert into child_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentMenuId != null">
+        parent_menu_id,
+      </if>
+      <if test="childMenuName != null">
+        child_menu_name,
+      </if>
+      <if test="childMenuNo != null">
+        child_menu_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentMenuId != null">
+        #{parentMenuId,jdbcType=INTEGER},
+      </if>
+      <if test="childMenuName != null">
+        #{childMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="childMenuNo != null">
+        #{childMenuNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangshi.multiblog.entity.ChildMenu">
+    update child_menu
+    <set>
+      <if test="childMenuName != null">
+        child_menu_name = #{childMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="childMenuNo != null">
+        child_menu_no = #{childMenuNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and parent_menu_id = #{parentMenuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhangshi.multiblog.entity.ChildMenu">
+    update child_menu
+    set child_menu_name = #{childMenuName,jdbcType=VARCHAR},
+      child_menu_no = #{childMenuNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and parent_menu_id = #{parentMenuId,jdbcType=INTEGER}
+  </update>
+</mapper>

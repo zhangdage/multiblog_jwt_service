@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangshi.multiblog.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.zhangshi.multiblog.entity.Permission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="permission_no" jdbcType="VARCHAR" property="permissionNo" />
+  </resultMap>
+<!--查详细的权限-->
+  <resultMap id="ResultMap" type="com.zhangshi.multiblog.entity.Permission" extends="BaseResultMap">
+    <collection property="parentMenus" column="permission_id" ofType="com.zhangshi.multiblog.entity.ParentMenu"
+                select="com.zhangshi.multiblog.mapper.ParentMenuMapper.getParentMenuByPermissionId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, permission_name, permission_no
+  </sql>
+<!--通过role的Id查权限-->
+  <select id="getPermissionByRoleId" resultMap="BaseResultMap">
+    select
+    p.id,p.permission_name,p.permission_no
+    from role_permission rp
+    left join permission p
+    on rp.permission_id = p.id
+    WHERE rp.role_id = #{0}
+  </select>
+
+<!--同过权限名字获取详细的权限对象-->
+  <select id="getPermissionByPermissionName" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />,id as permission_id
+    from permission
+    where permission_name = #{0}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhangshi.multiblog.entity.Permission">
+    insert into permission (id, permission_name, permission_no
+      )
+    values (#{id,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permissionNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhangshi.multiblog.entity.Permission">
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+      <if test="permissionNo != null">
+        permission_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionNo != null">
+        #{permissionNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangshi.multiblog.entity.Permission">
+    update permission
+    <set>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionNo != null">
+        permission_no = #{permissionNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhangshi.multiblog.entity.Permission">
+    update permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      permission_no = #{permissionNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -100,6 +100,10 @@ public class MyAuthenticationFilter extends BasicAuthenticationFilter {
             log.info("用户：{}，正在访问：{}", userName, request.getRequestURI());
             logger.info("authenticated user " + userName + ", setting security context");
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            //使用JWT快速生成token,确保每次访问都刷新时间
+            String newtoken = JwtUtil.setClaim(userDetails.getUsername(),true,60*60*1000);
+            response.setHeader(tokenHeader,head+newtoken);
             chain.doFilter(request, response);
         }
     }

@@ -6,6 +6,13 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_no" jdbcType="VARCHAR" property="userNo" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="userface" jdbcType="VARCHAR" property="userface" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="enabled" jdbcType="TINYINT" property="enabled" />
   </resultMap>
 
   <!--查询的时候将角色列表一起查询出来-->
@@ -87,7 +94,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_name, user_no, password
+    id, user_name, user_no, password, `name`, phone, address, telephone,userface,enabled,remark
   </sql>
   <!-- 通过用户名的查找基本 -->
   <select id="baseGetUserByName" resultMap="BaseResultMap" >
@@ -99,7 +106,7 @@
   <!-- 通过用户名的查找、包括对应的角色信息 -->
   <select id="getUserByName" resultMap="ResultMap">
     SELECT
-    u.id, u.user_name, u.user_no, u.password,
+     u.id, u.user_name, u.user_no, u.password, `name`, phone, address, telephone,userface,enabled,remark,
 
     r.id as role_id, r.role_name, r.role_no
 
@@ -114,7 +121,7 @@
 
   <select id="getUser" resultMap="totalResultMap">
     SELECT
-    u.id, u.user_name, u.user_no, u.password,
+   u.id, u.user_name, u.user_no, u.password, `name`, phone, address, telephone,userface,enabled,remark,
 
     r.id as role_id, r.role_name, r.role_no,r.id as role_permission_id
 

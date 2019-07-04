@@ -13,11 +13,38 @@
   </resultMap>
 
 
+  <resultMap id="RouterResultMap" type="com.zhangshi.multiblog.service.userservie.outputdto.RouterList">
+    <result column="url" property="url" jdbcType="VARCHAR"/>
+    <result column="path" property="path" jdbcType="VARCHAR"/>
+    <result column="component" property="component" javaType="java.lang.Object"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="iconCls" property="iconCls" jdbcType="VARCHAR"/>
+    <result column="keepAlive" property="keepAlive" jdbcType="BIT"/>
+    <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+    <association property="meta" javaType="com.zhangshi.multiblog.service.userservie.outputdto.Meta">
+      <result column="keepAlive" property="keepAlive"/>
+      <result column="requireAuth" property="requireAuth"/>
+    </association>
+    <collection property="children" ofType="com.zhangshi.multiblog.service.userservie.outputdto.RouterList">
+      <result column="path2" property="path" jdbcType="VARCHAR"/>
+      <result column="component2" property="component" jdbcType="VARCHAR"/>
+      <result column="name2" property="name" jdbcType="VARCHAR"/>
+      <result column="iconCls2" property="iconCls" jdbcType="VARCHAR"/>
+      <association property="meta" javaType="com.zhangshi.multiblog.service.userservie.outputdto.Meta">
+        <result column="keepAlive2" property="keepAlive"/>
+        <result column="requireAuth2" property="requireAuth"/>
+      </association>
+      <collection property="children" ofType="com.zhangshi.multiblog.service.userservie.outputdto.RouterList">
+        <result column="name3" property="name" jdbcType="VARCHAR"/>
+      </collection>
+    </collection>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, parent_menu_name, parent_menu_no
   </sql>
 
-  <!--通过权限Id查询详细的对应的父列表-->
+  <!--通过Id获取目录-->
   <select id="getParentMenuByPermissionId" resultMap="ResultMap">
     select
     pm.id, pm.parent_menu_name, pm.parent_menu_no,pm.id as parenMenu_id
@@ -25,6 +52,22 @@
     LEFT join parent_menu pm
     on ppm.parent_menu_id = pm.id
     WHERE ppm.permission_id = #{0}
+  </select>
+
+  <!-- 获取路由表 -->
+  <select id="getRouterListByPermissionIds"  resultMap="RouterResultMap">
+    select
+    m1.`id`,m1.`path`,m1.`component`,m1.`iconCls`,m1.`name`,m1.`requireAuth`,m2.`component` as component2,m2.`iconCls` as iconCls2,m2.`keepAlive` as keepAlive2,m2.`name` as name2,m2.`path` as path2,m2.`requireAuth` as requireAuth2
+    from parent_menu m1,parent_menu m2
+    where m1.`id`=m2.`parentId` and m1.`id`!=1
+    and m2.`id`
+    in
+    (SELECT parent_menu_id FROM permission_parent_menu WHERE permission_id
+    in
+    <foreach collection="permissionId" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>)
+    and m2.`enabled`=true order by m1.`id`,m2.`id`
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

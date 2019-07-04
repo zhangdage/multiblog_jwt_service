@@ -1,6 +1,7 @@
 package com.zhangshi.multiblog.filter;
 
 import com.zhangshi.multiblog.common.domain.MyUserDetails;
+import com.zhangshi.multiblog.common.domain.RespBean;
 import com.zhangshi.multiblog.common.util.GetPostRequestContentUtil;
 import com.zhangshi.multiblog.common.util.JwtUtil;
 import com.zhangshi.multiblog.common.util.ObjectMapperUtil;
@@ -104,6 +105,7 @@ public class MyLoginFilter extends UsernamePasswordAuthenticationFilter{
         //返回在response header 中返回token，并且返回用户可以查看的菜单数据
         response.setHeader(tokenHeader,head+token);
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write(ObjectMapperUtil.writeAsString(parentMenus));
+
+        response.getWriter().write(ObjectMapperUtil.writeAsString(RespBean.ok("登录成功!", userDetails.returnSecureUser())));
     }
 }

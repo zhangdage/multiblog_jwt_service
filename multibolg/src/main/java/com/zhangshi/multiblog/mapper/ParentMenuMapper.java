@@ -1,17 +1,23 @@
 package com.zhangshi.multiblog.mapper;
 
 import com.zhangshi.multiblog.entity.ParentMenu;
+import com.zhangshi.multiblog.service.userservie.outputdto.RouterList;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
-public interface ParentMenuMapper {
-    int deleteByPrimaryKey(Integer id);
+public abstract interface ParentMenuMapper
+{
+    public abstract int deleteByPrimaryKey(Integer paramInteger);
 
-    int insert(ParentMenu record);
+    public abstract int insert(ParentMenu paramParentMenu);
 
-    int insertSelective(ParentMenu record);
+    public abstract int insertSelective(ParentMenu paramParentMenu);
 
-    ParentMenu selectByPrimaryKey(Integer id);
+    public abstract ParentMenu selectByPrimaryKey(Integer paramInteger);
 
-    int updateByPrimaryKeySelective(ParentMenu record);
+    public abstract int updateByPrimaryKeySelective(ParentMenu paramParentMenu);
 
-    int updateByPrimaryKey(ParentMenu record);
+    public abstract int updateByPrimaryKey(ParentMenu paramParentMenu);
+
+    public abstract List<RouterList> getRouterListByPermissionIds(@Param("permissionId") List<Integer> paramList);
 }

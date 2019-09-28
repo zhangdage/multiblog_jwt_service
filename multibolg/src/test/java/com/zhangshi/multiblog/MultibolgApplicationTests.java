@@ -51,6 +51,5 @@ public class MultibolgApplicationTests {
         String vesion_01 = "测试版本回退01";
         String  vesion_03 = "再版本回退后再做一次提交";
         String vesion_04 = "测试不拉取是否会造成版本冲突";
-        String version_05 = "测试使用revert回退远程仓库的版本";
     }
 }

@@ -50,5 +50,6 @@ public class MultibolgApplicationTests {
         System.out.println("张大哥测试版本退回——更改测试版版本回退");
         String vesion_01 = "测试版本回退01";
         String  vesion_03 = "再版本回退后再做一次提交";
+        String vesion_04 = "测试不拉取是否会造成版本冲突";
     }
 }

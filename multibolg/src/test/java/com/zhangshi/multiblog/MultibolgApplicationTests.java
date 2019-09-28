@@ -47,6 +47,7 @@ public class MultibolgApplicationTests {
 
     @Test
     public void myTestVersionRotation(){
-        System.out.println("张大哥测试版本退回");
+//        System.out.println("张大哥测试版本退回——更改测试版版本回退");
+        String vesion_01 = "测试版本回退01";
     }
 }

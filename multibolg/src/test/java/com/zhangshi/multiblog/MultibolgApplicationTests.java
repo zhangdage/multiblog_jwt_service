@@ -45,4 +45,8 @@ public class MultibolgApplicationTests {
         System.out.println("跑出方法了");
     }
 
+    @Test
+    public void myTestVersionRotation(){
+        System.out.println("张大哥测试版本退回");
+    }
 }

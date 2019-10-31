@@ -1,8 +1,8 @@
-package com.zhangshi.multiblog;
+package com.zhangshi.multiblog.myexamination;
 
 import java.util.Scanner;
 
-public class MyGetWater {
+public class MyGetWaterMoveTest {
     public static void main(String args[]) {
         Scanner input = new Scanner(System.in);
 
